@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "Linting",
+            "program": "/bin/bash",
+            "args": [
+                "-c",
+                "flake8 --exclude venv/ --max-line-lengt 150"
+                // --ignore=E501,W503,F403,F405
+            ],
+            "dependsOn": ["Formatting"],
+        },
+        {
+            "type": "command",
+            "name": "Formatting",
+            "program": "/bin/bash",
+            "args": [
+                "-c",
+                "autopep8 *.py --in-place -v --max-line-length 150"
+            ],
+        },
+        {
+            "type": "command",
+            "name": "Push",
+            "program": "/bin/bash",
+            "args":
+                [
+                    "-c",
+                    "git push origin main & git push space main & git push github main &"
+                ]
+        }
+    ]
+}
