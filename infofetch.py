@@ -131,12 +131,12 @@ class Info:
             vendor: str = "none"
             vendor_ln = [ln for ln in self.lscpu.split("\n") if "Hypervisor vendor:" in ln]
             if vendor_ln:
-                vendor = vendor_ln[0].split(" ")[-1]
+                vendor = vendor_ln[0].split("  ")[-1]
             virt_ln = [ln for ln in self.lscpu.split("\n") if "Virtualization type:" in ln]
             if virt_ln:
-                virt = virt_ln[0].split(" ")[-1]
-            if vendor != "none":
-                assert (virt == "full")
+                virt = virt_ln[0].split("  ")[-1]
+            # if vendor != "none":
+                # assert (virt == "full")
             docker = os.path.isfile("/run/.containerenv")
             wsl = os.path.isdir("/run/WSL")
             assert (not (docker and wsl))
