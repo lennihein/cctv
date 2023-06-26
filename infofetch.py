@@ -49,9 +49,11 @@ class Info:
         self.system = None
         self.valid = True
         self.pku = None
+        # checks
         self.check_all()
 
     def check_all(self):
+        '''Executes all available checks and prints the results.'''
         public_methods = [getattr(self, method) for method in dir(self) if callable(getattr(self, method)) if
                           not (method.startswith('_') or method == "check_all")]
         for method in public_methods:
@@ -135,10 +137,10 @@ class Info:
             vendor: str = "none"
             vendor_ln = [ln for ln in self.lscpu.split("\n") if "Hypervisor vendor:" in ln]
             if vendor_ln:
-                vendor = vendor_ln[0].split("  ")[-1]
+                vendor = vendor_ln[0].split(":")[-1].strip()
             virt_ln = [ln for ln in self.lscpu.split("\n") if "Virtualization type:" in ln]
             if virt_ln:
-                virt = virt_ln[0].split("  ")[-1]
+                virt = virt_ln[0].split(":")[-1].strip()
             if vendor != "none":
                 assert (virt == "full")
             docker = os.path.isfile("/run/.containerenv")
