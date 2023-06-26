@@ -26,7 +26,11 @@ class Info:
         self.print_duration = duration
         self.print_wait = wait
         # infos
-        self.lscpu: str = run(["lscpu"], capture_output=True).stdout.decode('utf-8')
+        try:
+            self.lscpu: str = run(["lscpu"], capture_output=True).stdout.decode('utf-8')
+        except FileNotFoundError:
+            print(f"{FAIL}lscpu not found!{ENDC}")
+            exit(1)
         self.flags: list = [ln.split(": ")[1] for ln in self.lscpu.split("\n") if "Flags: " in ln][0].strip().split(" ")
         self.virt: VirtInfo = VirtInfo("none", "none", "none")
         self.smt = None
