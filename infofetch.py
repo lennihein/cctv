@@ -172,9 +172,9 @@ class Info:
         self.ucode = "unknown"
         # we can guess using md_clear hardware support
         if self.md_clear == "supported" and self.l1d_hw == "supported":
-            self.ucode = f"mitigations supported ({revision})"
+            self.ucode = f"mitigations supported{ '('+revision+')' if revision else ''}"
         elif self.md_clear == "not supported" and self.l1d_hw == "not supported":
-            self.ucode = f"mitigations not supported ({revision})"
+            self.ucode = f"mitigations not supported{ '('+revision+')' if revision else ''}"
         else:
             print(f"{WARNING}md_clear is {self.md_clear} but flush_l1d is {self.l1d_hw}{ENDC}")
         return self.ucode
