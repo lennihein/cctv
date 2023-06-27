@@ -155,14 +155,28 @@ class Info:
 
     def check_ucode(self):
         """Microcode"""
-        # not possible to detect in full virt
-        # not possible to detect in docker unless --priviledged
+        # update not possible to detect in full virt
+        # -> revision possible in recent QEMU versions that passthrough the revision
+        # update status not possible to detect in docker unless --priviledged
+
+        revision: str
+        try:
+            with open('/proc/cpuinfo') as f:
+                cpuinfo = f.read()
+            revision = [ln for ln in cpuinfo.split("\n") if "microcode" in ln][0].split(":")[-1].strip()
+        except FileNotFoundError:
+            print(f"{WARNING}/proc/cpuinfo not found!{ENDC}")
+        # dummy revision:
+        if revision == "0x1":
+            revision = ""
         self.ucode = "unknown"
         # we can guess using md_clear hardware support
-        if self.md_clear == "supported":
-            self.ucode = "likely sufficiently recent"
-        if self.md_clear == "not supported":
-            self.ucode = "likely out-of-date"
+        if self.md_clear == "supported" and self.l1d_hw == "supported":
+            self.ucode = f"mitigations supported ({revision})"
+        elif self.md_clear == "not supported" and self.l1d_hw == "not supported":
+            self.ucode = f"mitigations not supported ({revision})"
+        else:
+            print(f"{WARNING}md_clear is {self.md_clear} but flush_l1d is {self.l1d_hw}{ENDC}")
         return self.ucode
 
     def check_000_vendor(self):
