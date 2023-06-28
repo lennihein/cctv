@@ -49,6 +49,7 @@ class Info:
         self.system = None
         self.valid = True
         self.pku = None
+        self.msr = None
         # checks
         self.check_all()
 
@@ -166,8 +167,8 @@ class Info:
             revision = [ln for ln in cpuinfo.split("\n") if "microcode" in ln][0].split(":")[-1].strip()
         except FileNotFoundError:
             print(f"{WARNING}/proc/cpuinfo not found!{ENDC}")
-        # dummy revision:
-        if revision == "0x1":
+        # dummy revisions by KVM and Hyper-V respectively:
+        if revision in {"0x1", "0xffffffff"}:
             revision = ""
         self.ucode = "unknown"
         # we can guess using md_clear hardware support
@@ -236,3 +237,11 @@ class Info:
         else:
             self.pku = "not supported"
         return self.pku
+    
+    def check_msr(self):
+        """Model Specific Registers"""
+        if "msr" in self.flags:
+            self.msr = "supported"
+        else:
+            self.msr = "not supported"
+        return self.msr

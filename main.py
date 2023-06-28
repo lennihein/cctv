@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from printingtools import res_print, FAIL, ENDC, FAINT, color_test
+from printingtools import res_print, FAIL, ENDC, FAINT, color_test, WARNING
 from infofetch import Info
 from attacks import Attacks
 from sys import argv
@@ -29,15 +29,14 @@ if __name__ == '__main__':
         color_test()
         time.sleep(0.1)
 
-    # IGNORE CONTAINER MODE
-    if len(argv) >= 2 and "--ignore-container" in argv[1:]:
-        print("Ignoring containerisation")
-        # todo: implement
-        # info.virt.container =
-        raise Exception(NotImplementedError)
-
     # initialise info
     info = Info()
+
+    # IGNORE CONTAINER MODE
+    if len(argv) >= 2 and "--ignore-container" in argv[1:]:
+        print(f"{WARNING}Ignoring containerisation{ENDC}")
+        info.virt.container = None
+        info.virt.current = info.virt.vm
 
     # if assumptions are not met, omit attacks
     if not info.valid:
