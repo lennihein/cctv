@@ -172,7 +172,10 @@ class Attacks:
     @staticmethod
     def pf_rw(i: Info):
         """Meltdown-RW (aka 1.2)"""
-        return STD_NA
+        if i.virt.current == i.virt.vm and i.virt.vm:
+            return "protected", GREEN, "fully virtualised"
+        else:
+            return STD_NA
 
     @staticmethod
     def ud(i: Info):
