@@ -206,9 +206,9 @@ class Attacks:
             if i.msr == "not supported":
                 return "protected", GREEN, "MSR feature not enabled by hypervisor"
             elif i.msr == "supported":
-                if i.ucode == "mitigations supported":
+                if "mitigations supported" in i.ucode:
                     return "likely protected", CYAN, "microcode mitigations likely"
-                elif i.ucode == "mitigations not supported":
+                elif "mitigations not supported" in i.ucode:
                     return "assume vulnerable", MAGENTA, "msr feature unlikely mitigated by microcode"
                 else:
                     return "assume vulnerable", MAGENTA, "unknown microcode state"
@@ -216,9 +216,9 @@ class Attacks:
             if i.msr == "not supported":
                 return "protected", GREEN, "MSR feature not supported"
             elif i.msr == "supported":
-                if i.ucode == "mitigations supported":
+                if "mitigations supported" in i.ucode:
                     return "likely protected", CYAN, "microcode mitigations likely"
-                elif i.ucode == "mitigations not supported":
+                elif "mitigations not supported" in i.ucode:
                     return "assume vulnerable", MAGENTA, "msr feature unlikely mitigated by microcode"
                 else:
                     return "assume vulnerable", MAGENTA, "unknown microcode state"
