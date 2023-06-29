@@ -182,7 +182,7 @@ class Attacks:
         """Meltdown-UD"""
         if i.cpu_arch == "aarch64" or i.cpu_vendor == "ARM":
             assert (i.cpu_arch == "aarch64" and i.cpu_vendor == "ARM")
-            return STD_NA
+            return "unknown", YELLOW, "attack unexplored"
         else:
             return "protected", GREEN, "only affects ARM"
 
@@ -237,9 +237,7 @@ class Attacks:
         #     pass
         # return PROT, GREEN, "only affects Skylake-SP"
         if i.pku == "full support":
-            # todo: is vulnerable?
             return PVULN, MAGENTA, "full Protection Keys support"
         elif i.pku == "hardware support":
-            # todo: is vulnerable?
             return PVULN, MAGENTA, "Protection Keys hardware support"
         return "protected", GREEN, "Protection Keys not supported"
