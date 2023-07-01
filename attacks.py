@@ -166,8 +166,31 @@ class Attacks:
 
     @staticmethod
     def lazy_fp(i: Info):
-        """LazyFP"""
-        return STD_NA
+        """Meltdown-NM-Reg (aka LazyFP)"""
+
+        # for containers we can check the kernel version directly
+        if i.virt.container == i.virt.current and i.virt.container:
+            major, minor, _ = i.kernel.split(".")
+            if int(major) >= 5 or (int(major) == 4 and int(minor) >= 9):
+                return "protected", GREEN, "Kernel >= 4.9"
+            else:
+                if "xsaveopt" in i.flags:
+                    return "likely protected", CYAN, "xsaveopt available"
+                elif "xsave" in i.flags:
+                    return "likely protected", CYAN, "xsave available"
+                else:
+                    return "assume vulnerable", MAGENTA, "outdated kernel and no xsave"
+        
+        # for VMs
+        if i.cpu_vendor == "Intel":
+            if "xsaveopt" in i.flags:
+                return "likely protected", CYAN, "xsaveopt available"
+            elif "xsave" in i.flags:
+                return "likely protected", CYAN, "xsave available"
+            else:
+                return "likely protected", CYAN, "protectected for Hypervisors on Linux >= 4.9"
+        else:
+            return "protected", GREEN, "only affects Intel"
 
     @staticmethod
     def pf_rw(i: Info):
