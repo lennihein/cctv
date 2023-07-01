@@ -237,7 +237,7 @@ class Info:
         else:
             self.pku = "not supported"
         return self.pku
-    
+
     def check_msr(self):
         """Model Specific Registers"""
         if "msr" in self.flags:

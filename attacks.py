@@ -19,7 +19,8 @@ class Attacks:
     @staticmethod
     def mpx(i: Info):
         """Meltdown-BR-MPX"""
-        cases = {"supported": ("protected", GREEN, "unable to cross privilege boundaries"), "not supported": ("protected", GREEN, "MPX not supported"), "unknown": ("protected", GREEN, "unable to cross privilege boundaries")}
+        cases = {"supported": ("protected", GREEN, "unable to cross privilege boundaries"), "not supported": (
+            "protected", GREEN, "MPX not supported"), "unknown": ("protected", GREEN, "unable to cross privilege boundaries")}
         return cases[i.mpx]
 
     @staticmethod
@@ -180,7 +181,7 @@ class Attacks:
                     return "likely protected", CYAN, "xsave available"
                 else:
                     return "assume vulnerable", MAGENTA, "outdated kernel and no xsave"
-        
+
         # for VMs
         if i.cpu_vendor == "Intel":
             if "xsaveopt" in i.flags:
@@ -245,7 +246,6 @@ class Attacks:
                     return "assume vulnerable", MAGENTA, "msr feature unlikely mitigated by microcode"
                 else:
                     return "assume vulnerable", MAGENTA, "unknown microcode state"
-            
 
     @staticmethod
     def pk(i: Info):
