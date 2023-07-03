@@ -106,7 +106,7 @@ class Attacks:
         try:
             with open('/sys/devices/system/cpu/vulnerabilities/l1tf') as f:
                 l1tf_state = f.read().strip()
-            if l1tf_state == "Not Affected":
+            if l1tf_state == "Not affected":
                 return "protected", GREEN, "not affected"
         except FileNotFoundError:
             pass
@@ -131,7 +131,7 @@ class Attacks:
         try:
             with open('/sys/devices/system/cpu/vulnerabilities/mds') as f:
                 mds_state = f.read().strip()
-            if mds_state == "Not Affected":
+            if mds_state == "Not affected":
                 return "protected", GREEN, "not affected"
         except FileNotFoundError:
             pass
