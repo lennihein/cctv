@@ -160,10 +160,10 @@ class Attacks:
         """Rogue Inflight Data Load Cross Hyperthread"""
         return Attacks.zombieload_ht(i)
 
-    @staticmethod
-    def data_bounce(i: Info):
-        """Data Bounce"""
-        return STD_NA
+    # @staticmethod
+    # def data_bounce(i: Info):
+    #     """Data Bounce"""
+    #     return STD_NA
 
     @staticmethod
     def lazy_fp(i: Info):
@@ -226,26 +226,18 @@ class Attacks:
     @staticmethod
     def cpl_reg(i: Info):
         """Meltdown-CPL-REG (aka v3a)"""
-        if i.virt.vm:
-            if i.msr == "not supported":
+        if i.msr == "not supported":
+            if i.virt.vm:
                 return "protected", GREEN, "MSR feature not enabled by hypervisor"
-            elif i.msr == "supported":
-                if "mitigations supported" in i.ucode:
-                    return "likely protected", CYAN, "microcode mitigations likely"
-                elif "mitigations not supported" in i.ucode:
-                    return "assume vulnerable", MAGENTA, "msr feature unlikely mitigated by microcode"
-                else:
-                    return "assume vulnerable", MAGENTA, "unknown microcode state"
-        else:
-            if i.msr == "not supported":
+            else:
                 return "protected", GREEN, "MSR feature not supported"
-            elif i.msr == "supported":
-                if "mitigations supported" in i.ucode:
-                    return "likely protected", CYAN, "microcode mitigations likely"
-                elif "mitigations not supported" in i.ucode:
-                    return "assume vulnerable", MAGENTA, "msr feature unlikely mitigated by microcode"
-                else:
-                    return "assume vulnerable", MAGENTA, "unknown microcode state"
+        elif i.msr == "supported":
+            if "mitigations supported" in i.ucode:
+                return "likely protected", CYAN, "microcode mitigations likely"
+            elif "mitigations not supported" in i.ucode:
+                return "assume vulnerable", MAGENTA, "msr feature unlikely mitigated by microcode"
+            else:
+                return "assume vulnerable", MAGENTA, "unknown microcode state"
 
     @staticmethod
     def pk(i: Info):
