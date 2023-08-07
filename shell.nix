@@ -6,18 +6,14 @@ pkgs.mkShell {
         pkgs.util-linux
         pkgs.systemd
         # todo: remove, only for dev
-        pkgs.fish
-        pkgs.python310Packages.flake8
-        pkgs.python310Packages.autopep8
+        # pkgs.fish
+        # pkgs.python310Packages.flake8
+        # pkgs.python310Packages.autopep8
         # pkgs.python310Packages.pytest
     ];
 
-    shellHook = ''
-        echo "Linting with flake8 ... "
-        flake8 --exclude venv/ --max-line-lengt 150
-    '';
     # shellHook = ''
-    #     python3 main.py
-    #     exit
+    #     echo "Linting with flake8 ... "
+    #     flake8 --exclude venv/ --max-line-lengt 150
     # '';
 }
