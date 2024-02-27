@@ -161,16 +161,19 @@ class Info:
         # update status not possible to detect in docker unless --priviledged
 
         revision: str
+        self.ucode = "unknown"
+        revision = None
         try:
             with open('/proc/cpuinfo') as f:
                 cpuinfo = f.read()
             revision = [ln for ln in cpuinfo.split("\n") if "microcode" in ln][0].split(":")[-1].strip()
+            # dummy revisions by KVM and Hyper-V respectively:
+            if revision in {"0x1", "0xffffffff"}:
+                revision = ""
         except FileNotFoundError:
             print(f"{WARNING}/proc/cpuinfo not found!{ENDC}")
-        # dummy revisions by KVM and Hyper-V respectively:
-        if revision in {"0x1", "0xffffffff"}:
-            revision = ""
-        self.ucode = "unknown"
+        except IndexError:
+            print(f"{WARNING}No microcode revision stated!{ENDC}")
         # we can guess using md_clear hardware support
         if self.md_clear == "supported" and self.l1d_hw == "supported":
             self.ucode = f"mitigations supported{' ('+revision+')' if revision else ''}"

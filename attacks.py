@@ -171,7 +171,7 @@ class Attacks:
 
         # for containers we can check the kernel version directly
         if i.virt.container == i.virt.current and i.virt.container:
-            major, minor, _ = i.kernel.split(".")
+            major, minor = i.kernel.split(".")[0:2]
             if int(major) >= 5 or (int(major) == 4 and int(minor) >= 9):
                 return "protected", GREEN, "Kernel >= 4.9"
             else:
